@@ -1,16 +1,17 @@
-#installing and loading all necessary packages
 BiocManager::install("GEOquery")
 BiocManager::install("Biobase")
 BiocManager::install("apeglm")
 BiocManager::install("biomaRt")
 BiocManager::install("AnnotationDbi")
 BiocManager::install("org.Mm.eg.db")
-ninstall.packages("pheatmap")
+install.packages("pheatmap")
 install.packages("RColorBrewer")
 install.packages("devtools")
+install.packages
 devtools::install_github("stephenturner/annotables")
-devtools:: install_github("r-lib/conflicted")
+devtools::install_github("r-lib/conflicted")
 install.packages("tidyverse")
+install.packages('ashr')
 
 library(GEOquery)
 library(Biobase)
@@ -24,6 +25,7 @@ library(dplyr)
 library(tidyverse)
 library(biomaRt)
 library(conflicted)
+
 
 #reading in data and metadata
 countstable <- read.table('GSE225048_geo_rna_gene_counts.txt', header = TRUE, row.names = 1)
@@ -95,16 +97,20 @@ plotDispEsts(dds_analyzed,
 
 
 #getting wald test results to get log2 fold changes, specifying custom contrasts and threshold
-results <- results(dds_analyzed, contrast = c("treatment", "aOX40", "IgG"), alpha = 0.05,
+results <- results(dds_analyzed, 
+                   contrast = c("treatment", "aOX40", "IgG"), 
+                   alpha = 0.05,
                    lfcThreshold = 0.2)
 
 #shrinking log2 foldchange estimates for genes with low counts or high dispersion values
 shrunken_results <- lfcShrink(dds_analyzed, 
                               contrast = c("treatment", "aOX40", "IgG"), 
                               res = results, 
-                              type = "normal")
+                              type = "ashr")
 #plotting unshrunken MA plot
 plotMA(results)
+
+
 
 #plotting shrunken MA plot
 plotMA(shrunken_results)
@@ -207,6 +213,8 @@ colnames(top_20_sig_norm) <- c('IgG-2', 'IgG-3','IgG-4','IgG-5', 'IgG-6', 'aOX40
 #reformatting and gathering
 top_20_sig_norm <- rownames_to_column(top_20_sig_norm, var = "symbol")
 top_20_sig_norm <- gather(top_20_sig_norm, key = "sample", value = "normalized_counts", 2:9)
+
+
 top_20_sig_norm <- inner_join(top_20_sig_norm, rownames_to_column(metatable, var = "sample"), 
                      by = "sample")
 #plotting DE plot of top 20 differentially expressed genes 
@@ -216,7 +224,8 @@ ggplot(top_20_sig_norm) +
   xlab("Genes") +
   ylab("Normalized Counts") +
   ggtitle("20 Most Significant DE Genes") +
+  scale_color_manual(values = c("aOX40" = "#FF9933", "IgG" = "#9933FF")) +
   theme_bw() +
-  scale_color_manual(values = c("aOX40" = "#FF9933", "IgG" = "#9933FF"))
-  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-  theme(plot.title = element_text(hjust = 0.5))
+  theme(axis.text.x = element_text(angle = 45, vjust =1, hjust = 1)) +
+  theme(plot.title = element_text(hjust = 0.5)) 
+  
