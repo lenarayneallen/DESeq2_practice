@@ -1,8 +1,6 @@
 # Practice Analysis Reflection
 
-Throughout this practice analysis, there were several steps and concepts that initially gave me trouble. As a learning exercise, I will document the technical or conceptual issues that I encountered, how I was able to resolve them, and what resources I used to resolve them. I will also include the remaining questions that I have about the RNA-seq analysis process.
-
-Then, I will compare the plots and results obtained by running the analysis with different log2 fold change thresholds and different shrinkage methods. 
+Throughout this practice analysis, there were several steps and concepts that initially gave me trouble. As a learning exercise, I will document the technical or conceptual issues that I encountered, how I was able to resolve them, and what resources I used to resolve them. Then, I will compare the plots and results obtained by running the analysis with different log2 fold change thresholds and different shrinkage methods. Lastly, I will discuss how my results compared to those of the study's authors. 
 
 ## Challenging Concepts
 ### Mean, Variance, and Dispersion
@@ -43,6 +41,7 @@ I first tried to run the code as it was explained to me in the tutorials I utili
 ![cap1](https://github.com/lenarayneallen/DESeq2_practice/assets/124638335/6ade5f8a-4800-422f-b881-12361f87902c)
 
 This returned the following error:
+
 ![cap2](https://github.com/lenarayneallen/DESeq2_practice/assets/124638335/5abad7f9-f73e-489d-91ab-071fee7d589d)
 
 After doing some digging, I discovered that there are three methods of shrinkage to choose from: apeglm, ashr (adaptive shrinkage), and normal. As explained by the above error, apeglm (which appears to be the default method) cannot be used when specifying contrasts. Instead, you must specify a coefficient (coef). Ashr, however, can be used when specifying contrasts. Both apeglm and ashr appear to generally be considered superior to the normal method. DESeq2 will even provide a warning message when using the normal method: 
@@ -53,8 +52,13 @@ sources:
 https://www.biostars.org/p/9509326/
 
 
-## Results Comparison
-
+## Plot Comparisons: shrinkage methods and log2 fold change thresholds
+In order to better understand (1) the differences between shrinkage methods and (2) the impact of setting a lfcThreshold, I have provided a comparison of plots created under four conditions:
+1. Using ashr shrinkage and no lfcThreshold
+2. Using ashr shrinkage with an lfcThreshold of 0.2
+3. Using normal shrinkage with no lfcThreshold
+4. Using normal shrinkage with an lfcThreshold of 0.2
+   
 ### DE heatmaps
 ![lfcThreshold (1)](https://github.com/lenarayneallen/DESeq2_practice/assets/124638335/997fb20f-38dc-4853-88b8-a0ae4552ebd3)
 
@@ -68,13 +72,29 @@ https://www.biostars.org/p/9509326/
 ![lfcThreshold (3)](https://github.com/lenarayneallen/DESeq2_practice/assets/124638335/2aff9c5a-4b30-46b4-99ac-806391893208)
 
 ### Top 20 DE genes
-**ashr, no threshold**
-![ashr_no_thresh_genes](https://github.com/lenarayneallen/DESeq2_practice/assets/124638335/2e65ceef-c75a-48f2-9543-47588c0af48e)
+![lfcThreshold (4)](https://github.com/lenarayneallen/DESeq2_practice/assets/124638335/83e44efe-a410-40cf-995d-8b9e68be7a1f)
 
-**ashr, lfcThresh = 0.2**
-![ashr0 2genes](https://github.com/lenarayneallen/DESeq2_practice/assets/124638335/fe8238c2-265c-4a58-adbc-c09443906648)
+## How did my analysis compare to that of the authors?
+
+I initially chose this dataset because I was familiar with the paper (Hirschhorn et al. 2023), and my area of interest is in cancer immunology. However, the authors did not use DESeq2 for their analysis; they instead used the GUI Partek Flow. While Partek Flow _does_ include a wrapper of DESeq2 for differentiall expression analysis, the authors do not indicate in their methods whether this was utilized or not. 
+
+This bulk RNA seq analysis is a very small experiment in the larger context of the study. The authors initially found that an in-vivo mouse melanoma heterogenously expressing the differentiation marker antigen Trp1 was able to be eliminated by a triple combination therapy including cyclophosphamide, adoptive transfer of T cells specific to the Trp1 antigen, and an anti-OX40 antibody. Importantly, the anti-OX40 component of this therapy was essential to this tumor eliminationn.  In an effort to understand which part of the immune system was responsible for the killing of the cells not expressing the Trp1 antigen (antigen escape variants), the authors completed a series of experiments that identified neutrophils as essential to the killing of antigen escape variants in the context of the triple combination therapy. 
+
+The authors then sought to determine if neutrophils from tumors of mice who had recieved the triple combination therapy (cyclophosphamide, Trp1 T-Cells, and anti-OX40) were distinct from those who recieved control IgG in place of the anti-OX40 component of the therapy. At this point, the bulk RNA-seq analysis was completed in order to preliminarily (and roughly) determine whether the anti-OX40 neutrophils exhibited a distinct phenotype, prior to subsequent scRNA-seq. Thus, one figure summarizing this experiment was included in the paper (Fig. 5A): 
+
+![hirsch5A](https://github.com/lenarayneallen/DESeq2_practice/assets/124638335/ab7330ce-04ee-44d2-9c95-e0e75eb20ed0)
+
+For comparison, here is the PCA plot, volcano plot, and DE gene counts (using the ashr shrinkage method and lfcThreshold = 0.2) from my analysis:
+
+![PCA_plot](https://github.com/lenarayneallen/DESeq2_practice/assets/124638335/ffac8747-4cb4-4711-90a7-9fc8bf62616b)
+
+![volcano_ashr_0 2](https://github.com/lenarayneallen/DESeq2_practice/assets/124638335/7ae885e2-c32c-422a-9735-d87a356e9150)
+
+![ashr0 2number](https://github.com/lenarayneallen/DESeq2_practice/assets/124638335/a11a3346-eb14-47ad-90c0-7cdfb526d4a2)
 
 
-**normal, no threshold**
+Whereas PC1 represents 28.35% of the variation and PC2 represents 15.74% of the variation in the author's PCA plot, PC1 represents 59% of the variation and PC2 represents 13% of the variation in my PCA plot. Additionally, the authors identified 1135 upregulated genes and 343 downregulated genes in the anti-OX40 treated neutrophils compared to the IgG treated neutrophils, my analysis identified 263 upregulated genes and 579 downregulated genes. While these discrepancies may be accounted for by the different analysis methods, I very well could have made an error somewhere in the analysis. However, the trend of transcriptionally distinct neutrophil population observed in the original study is at least somewhat reflected in my analysis.  
 
-**normal, lfcThresh = 0.2**
+sources:
+https://www.cell.com/cell/fulltext/S0092-8674(23)00225-8?_returnURL=https%3A%2F%2Flinkinghub.elsevier.com%2Fretrieve%2Fpii%2FS0092867423002258%3Fshowall%3Dtrue
+https://documentation.partek.com/m/mobile.action#page/12943514
