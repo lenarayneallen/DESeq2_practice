@@ -69,8 +69,11 @@ https://www.biostars.org/p/9509326/
 
 ### Top 20 DE genes
 **ashr, no threshold**
+![ashr_no_thresh_genes](https://github.com/lenarayneallen/DESeq2_practice/assets/124638335/2e65ceef-c75a-48f2-9543-47588c0af48e)
 
 **ashr, lfcThresh = 0.2**
+![ashr0 2genes](https://github.com/lenarayneallen/DESeq2_practice/assets/124638335/fe8238c2-265c-4a58-adbc-c09443906648)
+
 
 **normal, no threshold**
 
