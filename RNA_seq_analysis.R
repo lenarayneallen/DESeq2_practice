@@ -1,18 +1,4 @@
-BiocManager::install("GEOquery")
-BiocManager::install("Biobase")
-BiocManager::install("apeglm")
-BiocManager::install("biomaRt")
-BiocManager::install("AnnotationDbi")
-BiocManager::install("org.Mm.eg.db")
-install.packages("pheatmap")
-install.packages("RColorBrewer")
-install.packages("devtools")
-install.packages
-devtools::install_github("stephenturner/annotables")
-devtools::install_github("r-lib/conflicted")
-install.packages("tidyverse")
-install.packages('ashr')
-
+#loading necessary packages
 library(GEOquery)
 library(Biobase)
 library(DESeq2)
@@ -25,6 +11,7 @@ library(dplyr)
 library(tidyverse)
 library(biomaRt)
 library(conflicted)
+library(ggrepel)
 
 
 #reading in data and metadata
@@ -125,13 +112,13 @@ summary(shrunken_results)
 
 
 #annotating
-
 #exploring mouse genome
 grcm38
 
 #converting shrunken log2 fold change results to a dataframe
-#shifting row names to the first column of the dataframe (for the purpose of later merging)
 shrunken_res_df <- data.frame(shrunken_results)
+
+#shifting row names to the first column of the dataframe (for the purpose of later merging)
 shrunken_res_df_rtc <- rownames_to_column(shrunken_res_df, var = "genename")
 
 
@@ -165,9 +152,9 @@ results_all <- left_join(x = merged_ids_res,
 
 
 #exploring results
-
 #getting significantly differentially expressed genes
 sig_res <- subset(results_all, padj < 0.05)
+
 #arranging by significance
 sig_res <- sig_res %>%
   arrange(padj)
@@ -188,16 +175,31 @@ pheatmap(sig_norm_counts,
 #making volcano plot of log2 fold changes vs. p-value (significance)
 #creating a column of logical vectors indicating significance
 results_all_logical <- results_all %>%
-  mutate(threshold = padj < 0.05)
+  mutate(threshold = padj < 0.05) 
+
+results_all_logical$threshold[results_all_logical$threshold == TRUE] <- 'significant'
+results_all_logical$threshold[results_all_logical$threshold == FALSE] <- 'insignificant'
+
+#creating columns for color-coding volcano based on upregulation and downregulation in aOX40 vs. IgG
+results_all_logical$significance <- "NA"
+results_all_logical$significance[results_all_logical$log2FoldChange > 0.6 & results_all_logical$threshold == "significant"] <- "upregulated"
+results_all_logical$significance[results_all_logical$log2FoldChange < 0.6 & results_all_logical$threshold == "significant"] <- "downregulated"
+
+#creating column of labels for top 20 genes for labeling in volcano plot
+results_all_logical <- results_all_logical %>% mutate(labels = "")
+results_all_logical <- results_all_logical %>% arrange(padj)
+results_all_logical$labels[1:20] <- as.character(results_all_logical$symbol[1:20])
+
+
 
 #plotting volcano plot
-ggplot(results_all_logical) +
-  geom_point(aes(x = log2FoldChange, y = -log10(padj),
-                 color = threshold)) +
+ggplot(results_all_logical, aes(x = log2FoldChange, y = -log10(padj))) +
+  geom_point(aes(color = significance)) +
+  geom_text_repel(aes(label = labels), max.overlaps = Inf) +
   xlab("log2 fold change") +
   ylab("-log10 adjusted p-value") +
-  scale_color_manual(name = "threshold",
-                     values = c("TRUE" = "#669966", "FALSE" = "#9933FF"))
+  scale_color_manual(name = "significance",
+                     values = c("upregulated" = "#669966", "downregulated" = "#9933FF", "NA" = "black" ))
   theme(legend.position = "none",
         plot.title = element_text(size = rel(1.5), hjust = 0.5),
         axis.title = element_text(size = rel(1.25)))
