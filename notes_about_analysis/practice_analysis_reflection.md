@@ -88,12 +88,12 @@ For comparison, here is the PCA plot, volcano plot, and DE gene counts (using th
 
 ![PCA_plot](https://github.com/lenarayneallen/DESeq2_practice/assets/124638335/ffac8747-4cb4-4711-90a7-9fc8bf62616b)
 
-![volcano_ashr_0 2](https://github.com/lenarayneallen/DESeq2_practice/assets/124638335/7ae885e2-c32c-422a-9735-d87a356e9150)
+![ashr0 2 volcano with top 20](https://github.com/lenarayneallen/DESeq2_practice/assets/124638335/000944de-b7a1-4ec0-9026-9f38ed27cd44)
 
 ![ashr0 2number](https://github.com/lenarayneallen/DESeq2_practice/assets/124638335/a11a3346-eb14-47ad-90c0-7cdfb526d4a2)
 
 
-Whereas PC1 represents 28.35% of the variation and PC2 represents 15.74% of the variation in the author's PCA plot, PC1 represents 59% of the variation and PC2 represents 13% of the variation in my PCA plot. Additionally, the authors identified 1135 upregulated genes and 343 downregulated genes in the anti-OX40 treated neutrophils compared to the IgG treated neutrophils, my analysis identified 263 upregulated genes and 579 downregulated genes. While these discrepancies may be accounted for by the different analysis methods, I very well could have made an error somewhere in the analysis. However, the trend of transcriptionally distinct neutrophil population observed in the original study is at least somewhat reflected in my analysis.  
+Whereas PC1 represents 28.35% of the variation and PC2 represents 15.74% of the variation in the author's PCA plot, PC1 represents 59% of the variation and PC2 represents 13% of the variation in my PCA plot. Additionally, the authors identified 1135 upregulated genes and 343 downregulated genes in the anti-OX40 treated neutrophils compared to the IgG treated neutrophils, my analysis identified 263 upregulated genes and 579 downregulated genes. These discrepancies may be accounted for by the different analysis methods, though I very well could have made an error somewhere in the analysis. However, the trend of transcriptionally distinct neutrophil population observed in the original study is at least somewhat reflected in my analysis.  
 
 sources:
 https://www.cell.com/cell/fulltext/S0092-8674(23)00225-8?_returnURL=https%3A%2F%2Flinkinghub.elsevier.com%2Fretrieve%2Fpii%2FS0092867423002258%3Fshowall%3Dtrue
