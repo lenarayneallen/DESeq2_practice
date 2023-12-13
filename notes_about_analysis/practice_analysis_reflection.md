@@ -76,7 +76,7 @@ In order to better understand (1) the differences between shrinkage methods and 
 
 ## How did my analysis compare to that of the authors?
 
-I initially chose this dataset because I was familiar with the paper (Hirschhorn et al. 2023), and my area of interest is in cancer immunology. However, the authors did not use DESeq2 for their analysis; they instead used the GUI Partek Flow. While Partek Flow _does_ include a wrapper of DESeq2 for differentiall expression analysis, the authors do not indicate in their methods whether this was utilized or not. 
+I initially chose this dataset because I was familiar with the paper (Hirschhorn et al. 2023), and my area of interest is in cancer immunology. However, the authors did not use DESeq2 for their analysis; they instead used the GUI Partek Flow. While Partek Flow _does_ include a wrapper of DESeq2 for differential expression analysis, the authors do not indicate in their methods whether this was utilized or not. 
 
 This bulk RNA seq analysis is a very small experiment in the larger context of the study. The authors initially found that an in-vivo mouse melanoma heterogenously expressing the differentiation marker antigen Trp1 was able to be eliminated by a triple combination therapy including cyclophosphamide, adoptive transfer of T cells specific to the Trp1 antigen, and an anti-OX40 antibody. Importantly, the anti-OX40 component of this therapy was essential to this tumor elimination.  In an effort to understand which part of the immune system was responsible for the killing of the cells not expressing the Trp1 antigen (antigen escape variants), the authors completed a series of experiments that identified neutrophils as essential to the killing of antigen escape variants in the context of the triple combination therapy. 
 
@@ -84,7 +84,7 @@ The authors then sought to determine if neutrophils from tumors of mice who had 
 
 ![hirsch5A](https://github.com/lenarayneallen/DESeq2_practice/assets/124638335/ab7330ce-04ee-44d2-9c95-e0e75eb20ed0)
 
-For comparison, here is the PCA plot, volcano plot, and DE gene counts (using the ashr shrinkage method and lfcThreshold = 0.2) from my analysis:
+For comparison, here are the PCA plot, volcano plot, and DE gene counts (using the ashr shrinkage method and lfcThreshold = 0.2) from my analysis:
 
 ![PCA_plot](https://github.com/lenarayneallen/DESeq2_practice/assets/124638335/ffac8747-4cb4-4711-90a7-9fc8bf62616b)
 
