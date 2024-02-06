@@ -5,7 +5,7 @@ Throughout this practice analysis, there were several steps and concepts that in
 ## Challenging Concepts
 ### Mean, Variance, and Dispersion
 
-At first, I did not understand the purpose of plotting the mean-variance relationship. To understand this, I refreshed my knowledge on the DESeq2 model and the concept variance. 
+At first, I did not understand the purpose of plotting the mean-variance relationship. To understand this, I refreshed my knowledge on the DESeq2 model and the concept of variance. 
 Variance is calculated by taking the square root of the standard deviation. For a given gene, the variance describes how much each individual sample’s gene expression differs from the mean gene expression of its treatment group. For RNA expression data, it is typical that the variance increases with mean expression, so plotting the mean-variance relationship is a good way to make sure that the expression data behaves as expected. The greater spread of variances observed in genes with lower mean expression is described as heteroscedasticity; this phenomenon is explained by bias introduced in the sample and library preparation steps of RNA sequencing that more strongly affects genes with lower expressions. 
 
 ![Image-1](https://github.com/lenarayneallen/DESeq2_practice/assets/124638335/eb7d59a6-aaaa-44db-a15f-4a0b24e2f945)
