@@ -1,9 +1,7 @@
-# DESeq2_practice
+# About this analysis
 I used DESeq2 to analyze publicly available bulk RNA-seq data from Hirschhorn et. al's study "T cell immunotherapies trigger neutrophil activation to eliminate tumor antigen escape variants".
 
 Link to Paper: https://www.cell.com/cell/fulltext/S0092-8674(23)00225-8?_returnURL=https%3A%2F%2Flinkinghub.elsevier.com%2Fretrieve%2Fpii%2FS0092867423002258%3Fshowall%3Dtrue
-
-# Practice Analysis Reflection
 
 Throughout this practice analysis, there were several steps and concepts that initially gave me trouble. As a learning exercise, I will document the technical or conceptual issues that I encountered, how I was able to resolve them, and what resources I used to resolve them. Then, I will compare the plots and results obtained by running the analysis with different log2 fold change thresholds and different shrinkage methods. Lastly, I will discuss how my results compared to those of the study's authors. 
 
